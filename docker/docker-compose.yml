@@ -1,0 +1,71 @@
+services:
+  caldera:
+    container_name: caldera
+    build:
+      context: ./caldera/
+      dockerfile: Dockerfile
+      args:
+        TZ: "UTC" #TZ sets timezone for ubuntu setup
+        WIN_BUILD: "true" #WIN_BUILD is used to enable windows build in sandcat plugin
+    image: caldera:latest
+    ports:
+      - "8888:8888"
+      - "8443:8443"
+      - "7010:7010"
+      - "7011:7011/udp"
+      - "7012:7012"
+      - "8853:8853"
+      - "8022:8022"
+      - "2222:2222"
+    volumes:
+      - ${PWD}/caldera:/usr/src/app:z
+    command: --log INFO
+    network_mode: service:ts-caldera
+
+  target:
+    container_name: target
+    build:
+      context: ./target/
+      dockerfile: Dockerfile
+    command: tail -f /dev/null
+    network_mode: service:ts-target
+
+  ts-caldera:
+    image: tailscale/tailscale:latest
+    container_name: ts-caldera
+    hostname: ts-caldera
+    environment:
+      - TS_AUTHKEY=TS-CALDERA-AUTH-KEY
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_EXTRA_ARGS=--advertise-tags=tag:inf808
+    volumes:
+      - tailscale-authkey-caldera:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
+
+  ts-target:
+    image: tailscale/tailscale:latest
+    container_name: ts-target
+    hostname: ts-target
+    environment:
+      - TS_AUTHKEY=${TS-TARGET-AUTH-KEY}
+      - TS_STATE_DIR=/var/lib/tailscale
+      - TS_EXTRA_ARGS=--advertise-tags=tag:inf808
+    volumes:
+      - tailscale-authkey-target:/var/lib/tailscale
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    cap_add:
+      - net_admin
+    restart: unless-stopped
+
+volumes:
+  tailscale-authkey-caldera:
+    driver: local
+  tailscale-authkey-target:
+    driver: local
+  caldera:
+    driver: local

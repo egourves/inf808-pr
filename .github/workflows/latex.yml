@@ -1,0 +1,27 @@
+name: Build LaTeX document
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '**.tex'
+      - '**.bib'
+      - '**.cls'
+
+jobs:
+  generate-release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+      - name: Set up LaTeX environment
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: rapport/main.tex
+        env:
+          TEXINPUTS: ".:.//:"
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          path: main.pdf
+          if-no-files-found: error

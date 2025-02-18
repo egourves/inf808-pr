@@ -1,0 +1,4 @@
+rapport/out/
+docker/caldera
+docker/tailscale/authkey
+*.env

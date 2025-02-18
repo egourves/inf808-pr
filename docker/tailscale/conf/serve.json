@@ -1,0 +1,16 @@
+{
+  "TCP": {
+    "443": {
+      "HTTPS": true
+    }
+  },
+  "Web": {
+    "ts-caldera.tailce1ce1.ts.net:443": {
+      "Handlers": {
+        "/": {
+          "Proxy": "http://localhost:8888"
+        }
+      }
+    }
+  }
+}
