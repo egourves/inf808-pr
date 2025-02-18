@@ -35,7 +35,7 @@ services:
     container_name: ts-caldera
     hostname: ts-caldera
     environment:
-      - TS_AUTHKEY=TS-CALDERA-AUTH-KEY
+      - TS_AUTHKEY=${TS_CALDERA_AUTH_KEY}
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_EXTRA_ARGS=--advertise-tags=tag:inf808
     volumes:
@@ -51,7 +51,7 @@ services:
     container_name: ts-target
     hostname: ts-target
     environment:
-      - TS_AUTHKEY=${TS-TARGET-AUTH-KEY}
+      - TS_AUTHKEY=${TS_TARGET_AUTH_KEY}
       - TS_STATE_DIR=/var/lib/tailscale
       - TS_EXTRA_ARGS=--advertise-tags=tag:inf808
     volumes:

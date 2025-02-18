@@ -1,6 +1,6 @@
 # INF808 - Projet recherche : simulation d'un APT avec Caldera
 
-[![Build LaTeX document](https://github.com/egourves/inf808-projet/actions/workflows/latex.yml/badge.svg)](https://github.com/egourves/inf808-projet/actions/workflows/latex.yml)
+[![Build LaTeX document](https://github.com/egourves/inf808-pr/actions/workflows/latex.yml/badge.svg)](https://github.com/egourves/inf808-pr/actions/workflows/latex.yml)
 
 ## Déploiement avec Docker
 
@@ -22,6 +22,9 @@ Le fichier `fix.sh` peut être nécessaire lorsque certains modules de Caldera n
 ```shell
 podman run --rm -v $PWD:/app:z ubuntu ./app/fix.sh
 ```
+
+> Si vous rencontrez une erreur liés aux volumes à cause des commandes précédentes, essayez d'enlever l'option `:z` après les volumes.
+> Cette option est utile sur les environments où SELinux est actif.
 
 ## Compilation LaTeX
 
