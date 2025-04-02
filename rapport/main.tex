@@ -1,38 +1,184 @@
-\documentclass[french]{rapport}
-\title{Titre} %Titre du fichier
+\documentclass[12pt,letterpaper]{article}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx} % Required for inserting images
+\usepackage{listings}
+\usepackage{xcolor}
+\usepackage{amsfonts}
+\usepackage{mathptmx}
+\usepackage{amsmath}
+\usepackage[numbers]{natbib}
+\usepackage{tikz}
+\usepackage[table]{xcolor}
+\usepackage{soul}
+\usepackage{array}
+\usepackage{stmaryrd}
+\usepackage{hyperref} % Placed here in the preamble
+\RequirePackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry} 
+\newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
+\hypersetup{
+    colorlinks=true,
+    linkcolor=black,
+    filecolor=magenta,      
+    urlcolor=cyan,
+    pdftitle={Compte_rendu_du_projet_recherche_INF808-AM},
+    pdfpagemode=FullScreen,
+}
+
+
+\definecolor{lightgray}{rgb}{0.8, 0.8, 0.8} % Define a custom light gray color
+\definecolor{green}{rgb}{0.0, 0.5, 0.0} % Green for low risk
+\definecolor{yellow}{rgb}{1.0, 1.0, 0.0} % Yellow for medium risk
+\definecolor{red}{rgb}{1.0, 0.0, 0.0} % Red for high risk
+\definecolor{blue}{rgb}{0.0, 0.0, 1.0} % Blue for very low risk
+
+
+\title{Compte rendu - Projet Recherche - Emulation d'APT par Caldera et Analyse}
+\author{Paul SCHELLER}
+\date{Mars 2025}
+
 \begin{document}
+\input{code}
+\input{front_page}
 
-%----------- Informations du rapport ---------
+\newpage
+\renewcommand{\contentsname}{Plan de l'étude}
+\tableofcontents
 
-\unif{Université de Sherbrooke}
-\titre{Projet recherche : simulation d'un APT avec Caldera} %Titre du fichier .pdf
-\cours{INF808} %Nom du cours
-\sujet{Réaction aux attaques et analyses des attaques} %Nom du sujet
 
-\eleves{Aymeric \textsc{Robin}, Ewen \textsc{Gourves}, Paul \textsc{Scheller}} %Nom des élèves
-
-%----------- Initialisation -------------------
-        
-\makemargin %Afficher les marges
-\makefrontpage %Créer la page de garde
-\tableofcontents %Créer la table de matières
-
-%------------- Introduction ----------------
 \newpage
 \section{Introduction}
-\subsection{Description}
 
-%------------- Section1 ----------------
+À l'heure où les technologies prennent toujours plus de place dans les infrastructure des entreprises et dans notre quotidien, de nouvelles menaces surgissent. Ces dernières évoluent rapidement et représentent un réel danger que ce soit pour les entreprises comme pour les consommateurs. \\
+Ainsi, il est important de se prémunir de ces menaces par la mise en place progressive et proactive de contrôles de sécurité. C'est pourquoi ce projet vise à reproduire des attaques ou ensembles d'attaques connues en s'appuyant sur le cadre MITRE ATT\&CK pour leur mise en place. Ensuite, elle sera réalisé par l'outil d'émulation Caldera puis, l'attaque sera analysé et détecté à l'aide d'un EDR comme Aurora et traité à l'aide de la partie défensive du logiciel d'émulation.
+
+\bigskip
+
+L'objectif de cette étude est donc de comprendre le comportement des attaquants et d'autre part d'évaluer la difficulté de détection d'une attaque soigneusement préparée. \\
+De plus, cette étude va nous permettre de renforcer nos connaissances établis lors du cours INF808 ainsi que notre efficacité pour sécuriser les systèmes d'informations par l'exploitation du plein potentiel des différents outils qui seront présentés ci-dessous.
+
+\bigskip
+
+Pour mener à bien cette analyse, nous avons concentré nos efforts sur la prise en main et la compréhension des outils Caldera et Aurora EDR. Ainsi, nous avons pu émuler plusieurs APT et récupérer plusieurs fichiers de log pertinents nous permettant de détecter de quelle type d'attaque nous étions victime afin d'y remédier.
+
 \newpage
-\section{Section1}
+\section{Objectifs}
 
-%------------- Section2 ----------------
+Le projet a pour objectif principal de comprendre et d'améliorer l'efficacité des équipes de défenses en cybersécurité. Pour ce faire, notre recherche va s'orienter autour de trois gros axes de la cybersécurité :  
+\begin{enumerate}
+    \item l'émulation d'attaques,
+    \item la réaction aux attaques,
+    \item et l'analyse des journaux.
+\end{enumerate}
+Par conséquent, pour réaliser à bien ce projet, on peut définir les sous-objectifs suivants :
+\begin{itemize}
+    \item Comprendre le comportement des attaquants et leurs méthodes
+    \item Déployer un environnement d'émulation fonctionnel
+    \item Exploiter le cadre MITRE ATT\&CK pour récupérer et comprendre des attaques connues
+    \item Comprendre et maitrîser l'émulation d'attaque
+    \item Être capable de trier et d'analyser des journaux, à l'aide d'outils comme des EDR afin de détecter des attaques potentielles
+    \item Pouvoir mettre en oeuvre une réaction aux attaques émulées
+    \item Analyser les résultats obtenus
+    \item Conclure sur l'efficacité de la méthode
+    \item Établir des recommandations sur des possibilité d'amélioration de la méthode
+\end{itemize}
+
+Ce projet nous permet donc de mettre en place un cadre de travail pour réaliser divers attaques trouvées à l'aide de l'outil MITRE ATT\&CK, puis de réagir et d'analyser ses dernières. Cela va nous permettre de mieux comprendre le déroulement de ces actions et de saisir les difficultés qui en ressortent.
+
 \newpage
-\section{Section2}
+\section{État de l'art}
+\section{Les Outils}
+
+\subsection{MITRE ATT\&CK}
+
+\subsubsection{Description}
+
+La corporation MITRE a conçu un cadre de connaissance permettant de rassembler les différentes techniques, tactiques et procédures (TTP) utilisées par les cybercriminels. Ce cadre s'appelle MITRE ATT\&CK (Adversarial Tactics, Technics and Common Knowledge). Cette base de connaissance ouverte recense le comportement des attaquants au cours des différentes phases d'une attaque. 
+
+\subsubsection{Structure}
+
+L'outil est segmenté en plusieurs matrices selon les différents environnement et surfaces d'attaques:
+\begin{itemize}
+    \item Entreprise (Windows, Linux, MacOS, Cloud, ...)
+    \item Mobile (Android, IOS)
+    \item ICS (Système de contrôle industriel)
+\end{itemize}
+
+\subsubsection{Objectifs}
+
+L'outil a pour objectif de :
+\begin{itemize}
+    \item \textbf{Cartographier les attaques} pour mieux les comprendre
+    \item \textbf{Améliorer l'identification et la détection} des attaques
+    \item \textbf{Renforcer la défense} par la proposition de diverses mitigations
+    \item \textbf{Établir un cadre commun} pour les acteurs du monde de la cybersécurité
+\end{itemize}
+
+\subsubsection{Les applications}
+
+L'outil peut être utilisé pour :
+\begin{itemize}
+    \item \textbf{analyser les menaces}
+    \item \textbf{supporter pour les équipes offensives}
+    \item \textbf{servir de base de données} pour les outils de type SIEM, ...
+\end{itemize}
+
+\subsection{Caldera}
+
+\subsubsection{Description}
+
+L'outil Caldera a été conçu par MITRE pour aider les entreprises à améliorer la sécurité de leurs systèmes d'informations. Pour ce faire, la plateforme open-source permet d'émuler des attaques récupérés sur le framework MITRE ATT\&CK ou d'en créer directement sur l'outil. Il permet d'automatiser les tests des équipes rouges.
+
+\subsubsection{Fonctionnalités}
+
+Les fonctionnalités du logiciel sont les suivantes :
+\begin{itemize}
+    \item \textbf{Automatiser les tests} des équipes offensives
+    \item \textbf{Modulaire} : permet d'adapter le logiciel aux besoins des entreprises
+    \item \textbf{Interopérabilité}
+    \item \textbf{Interface visuel et intuitive}
+    \item \textbf{Environnement de test} : permet d'effectuer des tests dans un environnement controlé et sécuritaire
+\end{itemize}
+
+\subsubsection{Objectifs}
+
+Le logiciel a été conçu pour répondre aux besoins suivants :
+\begin{itemize}
+    \item \textbf{Tester la détection des attaques} par les dispositifs de sécurité de l'entreprise
+    \item \textbf{Automatiser les tests} des équipes offensives
+    \item \textbf{Former les équipes de défense} à réagir aux attaques informatiques
+\end{itemize}
+
+\subsubsection{Cas d'usage}
+
+Les cadre d'utilisation de la plateforme sont les suivants :
+\begin{itemize}
+    \item \textbf{Red Teaming et Blue Teaming}
+    \item \textbf{Tests des outils de détection} (SIEM, EDR, ...)
+    \item \textbf{Former les équipes} 
+\end{itemize}
+
+\subsection{Aurora EDR}
 
 
-%------------- Section2 ----------------
+
+\section{Déroulement du Projet}
+
+L'étude est constituée de plusieurs étapes clés : \\
+Dans une premier temps, nous allons réaliser une étude préalable pour comprendre et maitriser les différents outils présentés précedemment. \\
+Ensuite, nous allons émuler plusieurs APT dans l'objectif d'évaluer dans un premier temps l'efficacité de l'outil Caldera, puis, dans un second temps d'évaluer l'utilité des outils de détection comme Aurora ainsi que les difficultés qui en sont liés. \\
+Enfin, nous conclurons quant à l'utilité et les forces des outils présentés 
+
+\subsection{Étude préalable}
+\subsection{Premier scénario}
+\subsection{Second scénario}
+\subsection{Troisième scénario}
+\section{Observation}
+\section{Conclusion}
+
+
+
 \newpage
-\section{Section3}
-
+\bibliographystyle{unsrtnat} % or any other style like apalike, alpha, etc.
+\bibliography{bib/Bib_TP4_INF802}
 \end{document}
+
