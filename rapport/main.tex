@@ -159,7 +159,78 @@ Les cadre d'utilisation de la plateforme sont les suivants :
 
 \subsection{Aurora EDR}
 
+Aurora EDR est une solution de détection et de réponse des terminaux (EDR) développée par Nextron Systems. Cet outil utilise les règles Sigma pour établir des profils et détecter des menaces, tout en étant totalement transparent. Aurora utilise l'intelligence artificielle et l'analyse comportementale pour détecter des activités suspectes à la différence de la majorité des EDR qui se base sur les signatures. 
+Notre choix s'est porté sur Aurora pour analyser les journaux car il tourne localement sur les terminaux, réduisant donc l'impact sur les ressources système et limitant les fuites de données sensibles à l'extérieur du réseau. De plus, l'outil peut fonctionner sur des systèmes aux ressources limitées, grâce à sa légereté et son efficacité, faisant de ce dernier un très bon choix.
 
+\subsubsection{Fonctionnalités}
+
+Aurora possède de nombreuses fonctionnalités donc les principales consiste à :
+\begin{itemize}
+    \item \textbf{détecter les comportements anormaux} en temps réel,
+    \item \textbf{identifier les menaces} basés sur des schémas d'attaques, en cherchant les déviances avec des comportements normaux,
+    \item \textbf{répondre aux incidents} : isoler et remédier,
+    \item \textbf{rechercher des signes d'intrusions avancés}
+    \item \textbf{mettre en lien les résultats d'analyse} avec les données du cadre MITRE ATT\&CK.
+    \item \textbf{journaliser}
+\end{itemize}
+
+\subsubsection{Avantages de l'outil}
+
+L'outil représente un atout pour les entreprises de part sa capacité à réaliser les tâches suivantes:
+\begin{enumerate}
+    \item Détecter des menaces avancées
+    \item Réagir rapidement aux attaques en appliquant automatiquement des mitigations
+    \item Renforcer la posture de sécurité de l'entreprise
+    \item et enfin faciliter les investigations
+\end{enumerate}
+
+\subsubsection{Application}
+
+Aurora EDR est principalement utilisé pour répondre aux besoins suivants : protéger les système contre les rançongiciels, détecter des APTs, Automatiser la réponse aux incidents et aider les enquêteurs.
+
+\bigskip
+
+Dans notre cas, nous utiliserons principalement Aurora EDR pour aider à la détection des APTs au travers les journaux de Windows.
+
+\subsection{Tailscale}
+
+\subsubsection{Description}
+
+Tailscale est un outil qui permet de réaliser un réseau virtuel privé (VPN). Il se base sur le protocole WireGuard, reconnu pour son efficacité, sa rapidité et sa sécurité. Ce qui distingue Tailscale des autres solutions VPN, c'est sa capacité à créer un réseau virtuel entre plusieurs machines, même si elles n'appartiennent pas au même réseau local.
+
+\bigskip
+
+De fait, l'outil va permet de créer une infrastructure pour le projet avec le déploiement de plusieurs instances de CALDERA et d'une machine virutelle cible sur Windows. Chaque machine peut communiquer directement avec l'autre et va nous permettre de travailler sur le projet de manière efficace sans nécessité de se connecter à un réseau local configuré.
+
+\subsubsection{Fonctionnalités}
+
+Les principales fonctionnalités de Tailscale incluent :
+\begin{itemize}
+    \item \textbf{Configuration simplifiée} : Configuration automatisée de l'infrastructure réseau (pare-feu, routage, ...),
+    \item \textbf{Sécurité renforcée} : Chiffrement avec Wireguard,
+    \item \textbf{Accès à distance} : Permet de se connecter au réseau même à distance,
+    \item \textbf{Gestion des identités} 
+    \item \textbf{Interopérabilité} : Fonctionne sur plusieurs OS comme Windows, macOS, Linux, iOS et Android.
+\end{itemize}
+
+\subsubsection{Avantages}
+
+Tailscale présente plusieurs avantages :
+\begin{itemize}
+    \item \textbf{Facilité de prise en main}
+    \item \textbf{Performance} : Faible latence et faible consommation de ressources grâce à WireGuard.
+    \item \textbf{Sécurité} : Chiffrement de bout en bout et gestion fine des autorisations.
+\end{itemize}
+
+\subsubsection{Cas d'usage}
+
+Tailscale peut être utilisé dans divers scénarios, tels que :
+\begin{itemize}
+    \item \textbf{Accès sécurisé aux ressources internes} : Par exemple, accéder à des serveurs ou bases de données internes.
+    \item \textbf{Collaboration entre équipes distantes} : Permet de travailler ensemble sur un même réseau, une même infrastructure mais à distance
+    \item \textbf{Administration système} : Gérer des machines distantes sans exposer les ports au public.
+    \item \textbf{Création de réseaux privés temporaires} : Pour des projets ou des tests spécifiques.
+\end{itemize}
 
 \section{Déroulement du Projet}
 
@@ -169,6 +240,29 @@ Ensuite, nous allons émuler plusieurs APT dans l'objectif d'évaluer dans un pr
 Enfin, nous conclurons quant à l'utilité et les forces des outils présentés 
 
 \subsection{Étude préalable}
+
+\subsubsection{Installation des outils}
+
+La première étape de l'étude a consisté à installer les différents outils présentés précédemment. \\
+
+Pour commencer, nous avons utiliser Tailscale pour créer un réseau virtuel qui nous sert d'environnement de travail. \\
+Ensuite, nous avons instancié caldera dans un conteneur Docker. Nous avons rencontré ensuite certaines difficultés pour le faire fonctionner dans ce même conteneur, puis de se connecter à l'interface web depuis une autre machine du réseau virtuel. \\
+Enfin, nous avons déployer une machine virtuelle Windows serveur 2019 sur laquelle nous avons installé l'EDR Aurora. On aura par la suite configuré un Active Directory (AD) sur cette même machine pour une simulation plus proche d'un environnement d'entreprise.
+
+\subsubsection{Prise en main des outils}
+\begin{enumerate}
+    \item \textbf{Caldera} : 
+    Pour prendre en main l'outil Caldera, il nous a fallu commencer par comprendre comment fonctionne l'émulation d'attaque. Ainsi, nous avons utilsés les "room" de \textit{TryHackMe} à ce sujet. \\
+
+    Pour cela nous avons dans un premier temps appris le concept d'émulation d'attaque, non seulement d'un point de vue technique mais aussi d'un point vue entreprise (entente avec l'entreprise cible, méthodologie, Rapport). Dans un second temps, nous avons mis en pratique nos connaissances via l'outil \verb|Invoke-Atomic| développé par le groupe Atomic Red Team pour l'émulation d'APT, de techniques via Powershell. \\
+    Enfin nous avons réaliser le cours sur l'outil Caldera qui nous a appris à manier l'outil et ses différentes facettes. 
+    \item \textbf{Windows \- Event Manager} :
+    Afin de mieux comprendre comment fonctionne les attaques d'un point de vue de la victime et l'EDR Aurora, nous avons décider d'apprendre et de comprendre la gestion des journaux sur Windows. Ainsi, nous avons utilisé les outils suivant : \verb|Get-WinEvent|, \verb|wevtutil.exe| ou encore \verb|XPath Queries|. Nous avons effectuer la "room" à ce sujet sur TryHackMe. Cela nous a permis de comprendre la formes des techniques au sein des journaux, ainsi que la manière de les trier et de les analyser. \\
+    \item \textbf{Aurora EDR} :
+    Nous avons ensuite pris en main l'outil Aurora EDR. Pour cela, nous avons utilisé la documentation de l'outil qui nous a permis de comprendre comment fonctionne l'outil et comment il s'intègre dans notre environnement. Puis, nous avons réaliser la leçon de mise en pratique de TryHackMe. \\
+\end{enumerate}
+
+
 \subsection{Premier scénario}
 \subsection{Second scénario}
 \subsection{Troisième scénario}
@@ -179,6 +273,6 @@ Enfin, nous conclurons quant à l'utilité et les forces des outils présentés
 
 \newpage
 \bibliographystyle{unsrtnat} % or any other style like apalike, alpha, etc.
-\bibliography{bib/Bib_TP4_INF802}
+
 \end{document}
 
