@@ -24,10 +24,13 @@ services:
 
   target:
     container_name: target
-    build:
-      context: ./target/
-      dockerfile: Dockerfile
-    command: tail -f /dev/null
+    image: crycode/http-server-upload
+    #build:
+    #  context: ./target/
+    #  dockerfile: Dockerfile
+    #command: tail -f /dev/null
+    volumes:
+      - target:/upload
     network_mode: service:ts-target
 
   ts-caldera:
@@ -68,4 +71,6 @@ volumes:
   tailscale-authkey-target:
     driver: local
   caldera:
+    driver: local
+  target:
     driver: local

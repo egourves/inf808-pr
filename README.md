@@ -6,7 +6,7 @@
 
 Le fichier `docker-compose.yml` dans le dossier `docker` permet de déployer les conteneurs suivants :
 - Caldera
-- Un conteneur alpine servant de cible
+- Un conteneur contenant un service d'upload servant de cible
 - Un conteneur tailscale pour exposer Caldera sur le tailnet
 - Un conteneur tailscale pour exposer la cible sur le tailnet
 

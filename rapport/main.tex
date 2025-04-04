@@ -49,25 +49,25 @@
 \section{Introduction}
 
 À l'heure où les technologies prennent toujours plus de place dans les infrastructure des entreprises et dans notre quotidien, de nouvelles menaces surgissent. Ces dernières évoluent rapidement et représentent un réel danger que ce soit pour les entreprises comme pour les consommateurs. \\
-Ainsi, il est important de se prémunir de ces menaces par la mise en place progressive et proactive de contrôles de sécurité. C'est pourquoi ce projet vise à reproduire des attaques ou ensembles d'attaques connues en s'appuyant sur le cadre MITRE ATT\&CK pour leur mise en place. Ensuite, elle sera réalisé par l'outil d'émulation Caldera puis, l'attaque sera analysé et détecté à l'aide d'un EDR comme Aurora et traité à l'aide de la partie défensive du logiciel d'émulation.
+Ainsi, il est important de se prémunir de ces menaces par la mise en place progressive et proactive de contrôles de sécurité. C'est pourquoi ce projet vise à reproduire des attaques ou ensembles d'attaques connues en s'appuyant sur le cadre MITRE ATT\&CK. Ensuite, elle sera réalisé par l'outil d'émulation Caldera puis, l'attaque sera analysé et détecté à l'aide d'un EDR comme Aurora et traité à l'aide de la partie défensive du logiciel d'émulation.
 
 \bigskip
 
-L'objectif de cette étude est donc de comprendre le comportement des attaquants et d'autre part d'évaluer la difficulté de détection d'une attaque soigneusement préparée. \\
-De plus, cette étude va nous permettre de renforcer nos connaissances établis lors du cours INF808 ainsi que notre efficacité pour sécuriser les systèmes d'informations par l'exploitation du plein potentiel des différents outils qui seront présentés ci-dessous.
+L'objectif de cette étude est de comprendre le comportement des attaquants dans un premier temps. Puis, d'évaluer la difficulté de détection d'une attaque soigneusement préparée. \\
+De plus, cette étude va nous permettre de renforcer nos connaissances établis lors du cours INF808 ainsi que notre efficacité pour sécuriser les systèmes d'informations par l'exploitation du plein potentiel des différents outils qui seront présentés dans la suite de ce rapport.
 
 \bigskip
 
-Pour mener à bien cette analyse, nous avons concentré nos efforts sur la prise en main et la compréhension des outils Caldera et Aurora EDR. Ainsi, nous avons pu émuler plusieurs APT et récupérer plusieurs fichiers de log pertinents nous permettant de détecter de quelle type d'attaque nous étions victime afin d'y remédier.
+Pour mener à bien cette analyse, nous avons concentré nos efforts sur la prise en main et la compréhension des outils Caldera et Aurora EDR. Ainsi, nous avons pu émuler plusieurs APT pour récupérer des journaux pertinents afin d'évaluer la possibilité d'identifier quel type d'attaque était mené afin d'y remédier.
 
 \newpage
 \section{Objectifs}
 
-Le projet a pour objectif principal de comprendre et d'améliorer l'efficacité des équipes de défenses en cybersécurité. Pour ce faire, notre recherche va s'orienter autour de trois gros axes de la cybersécurité :  
+Le projet a pour objectif principal de comprendre et d'améliorer l'efficacité des équipes de défenses en cybersécurité. Pour ce faire, notre recherche va s'orienter autour de trois grands axes de la cybersécurité :  
 \begin{enumerate}
     \item l'émulation d'attaques,
     \item la réaction aux attaques,
-    \item et l'analyse des journaux.
+    \item l'analyse des journaux.
 \end{enumerate}
 Par conséquent, pour réaliser à bien ce projet, on peut définir les sous-objectifs suivants :
 \begin{itemize}
@@ -82,7 +82,8 @@ Par conséquent, pour réaliser à bien ce projet, on peut définir les sous-obj
     \item Établir des recommandations sur des possibilité d'amélioration de la méthode
 \end{itemize}
 
-Ce projet nous permet donc de mettre en place un cadre de travail pour réaliser divers attaques trouvées à l'aide de l'outil MITRE ATT\&CK, puis de réagir et d'analyser ses dernières. Cela va nous permettre de mieux comprendre le déroulement de ces actions et de saisir les difficultés qui en ressortent.
+Ce projet nous permet donc de mettre en place un cadre de travail pour réaliser divers attaques trouvées à l'aide de l'outil MITRE ATT\&CK, puis de réagir à ses dernières ainsi que les analyser.
+Cela nous permettra de mieux comprendre le déroulement de ces actions et de saisir les difficultés qui en ressortent.
 
 \newpage
 \section{État de l'art}
@@ -117,9 +118,9 @@ L'outil a pour objectif de :
 
 L'outil peut être utilisé pour :
 \begin{itemize}
-    \item \textbf{analyser les menaces}
-    \item \textbf{supporter pour les équipes offensives}
-    \item \textbf{servir de base de données} pour les outils de type SIEM, ...
+    \item \textbf{Analyser les menaces}
+    \item \textbf{Supporter pour les équipes offensives}
+    \item \textbf{Servir de base de données} pour les outils de type SIEM, ...
 \end{itemize}
 
 \subsection{Caldera}
@@ -196,21 +197,22 @@ Dans notre cas, nous utiliserons principalement Aurora EDR pour aider à la dét
 
 \subsubsection{Description}
 
-Tailscale est un outil qui permet de réaliser un réseau virtuel privé (VPN). Il se base sur le protocole WireGuard, reconnu pour son efficacité, sa rapidité et sa sécurité. Ce qui distingue Tailscale des autres solutions VPN, c'est sa capacité à créer un réseau virtuel entre plusieurs machines, même si elles n'appartiennent pas au même réseau local.
+Tailscale est un outil qui permet de réaliser un réseau virtuel privé (VPN). Il se base sur le protocole WireGuard, reconnu pour son efficacité, sa rapidité et sa sécurité. Ce qui distingue Tailscale des autres solutions VPN, c'est sa simplicité de déploiement et sa capacité à créer des réseaux maillés entre plusieurs appareils, sans nécessiter de configuration complexe. \\
+Tailscale est particulièrement adapté pour les environnements de travail distribués, où les utilisateurs peuvent se connecter à des ressources internes de manière sécurisée, même lorsqu'ils sont éloignés physiquement du réseau d'entreprise.
 
 \bigskip
 
-De fait, l'outil va permet de créer une infrastructure pour le projet avec le déploiement de plusieurs instances de CALDERA et d'une machine virutelle cible sur Windows. Chaque machine peut communiquer directement avec l'autre et va nous permettre de travailler sur le projet de manière efficace sans nécessité de se connecter à un réseau local configuré.
+De fait, l'outil va permet de créer une infrastructure pour le projet avec le déploiement de CALDERA et d'une machine virutelle cible sur Windows. Chaque machine peut communiquer directement avec l'autre et cela va nous permettre de travailler sur le projet de manière efficace sans nécessité de se connecter à un réseau local configuré.
 
 \subsubsection{Fonctionnalités}
 
 Les principales fonctionnalités de Tailscale incluent :
 \begin{itemize}
-    \item \textbf{Configuration simplifiée} : Configuration automatisée de l'infrastructure réseau (pare-feu, routage, ...),
+    \item \textbf{Configuration simplifiée} : Configuration automatisée de l'infrastructure réseau (routage, contrôle des accès, DNS, ...),
     \item \textbf{Sécurité renforcée} : Chiffrement avec Wireguard,
     \item \textbf{Accès à distance} : Permet de se connecter au réseau même à distance,
-    \item \textbf{Gestion des identités} 
-    \item \textbf{Interopérabilité} : Fonctionne sur plusieurs OS comme Windows, macOS, Linux, iOS et Android.
+    \item \textbf{Gestion des identités} : Tailscale utilise des ACL pour contrôler l'accès aux ressources. Il s'intègre avec des systèmes d'authentification tiers comme Google, Microsoft, Okta, etc.
+    \item \textbf{Interopérabilité} : Fonctionne sur plusieurs plateformes comme Windows, macOS, Linux, iOS et Android.
 \end{itemize}
 
 \subsubsection{Avantages}
