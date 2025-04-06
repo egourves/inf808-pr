@@ -52,7 +52,7 @@ $Events | ForEach-Object {
     $eventData | ForEach-Object {
         if ($_ -match $pattern) {
             $output = [PSCustomObject]@{
-                TPP = $matches[0]
+                TTP = $matches[0]
                 EventTime = $eventXml.System.TimeCreated.SystemTime
                 Level = $levelDictionary[((($eventXml.EventData.Data | Where-Object { $_ -like "Rule_Level*" } | Select-Object -First 1) -split ':' | Select-Object -Last 1) -replace ' ', '')]
                 ParentCommandLine = ($eventXml.EventData.Data | Where-Object { $_ -like "ParentCommandLine*" } | Select-Object -First 1) -split ':' | Select-Object -Last 1
@@ -64,7 +64,7 @@ $Events | ForEach-Object {
                  $output | Export-Csv -Path $outputFile -NoTypeInformation -Append
             } else {
                 # Store the output in a variable for later use
-                $output | Select-Object TPP, EventTime, Level, ParentCommandLine, CommandLine, EventID
+                $output | Select-Object TTP, EventTime, Level, ParentCommandLine, CommandLine, EventID
             }
         }
     }
