@@ -52,6 +52,23 @@ Pour mettre en lien les TTP générées dans les Windows Event par Aurora avec d
      }} | Sort-Object -Property Count | .\Match_APT_with_TTP
 ```
 
+Il est possible d'automatiser les tâches sur Windows à l'aide d'un planificateur de tâche qui enverra le résultat de la commande ci-dessus par mail à l'aide de cette commande : 
+```powershell
+$body = .\Get-TTP.ps1 | Group-Object -Property TPP | ForEach-Object {     [PSCustomObject]@{
+                 TTP = $_.Name  # Reuse the category from the original objects
+                 Count = $_.Count
+                 EventDetail = $_.Group  # Retain the original objects in the group
+             }} | Sort-Object -Property Count | .\Match_APT_with_TTP | Out-String
+$params = @{
+    To = 'NetworkAdmin@inf808.com'
+    From = 'no-reply-psh@inf808.com'
+    Subject = 'APT link Report'
+    Body = $body
+    SmtpServer = 'smtp.inf808.com'
+}
+Send-MailMessage @params
+```
+
 Un exemple de sortie du script avec la commande précédente :
 ```powershell
 T1027.004     1 {@{TPP=T1027.004; EventTime=2025-04-05T23:38:37.487153400Z; Level=2; ParentCommandLine= powershell; CommandLine=\Users\A…
