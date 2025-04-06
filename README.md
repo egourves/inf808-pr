@@ -36,12 +36,20 @@ Le scrip`Get-TTP.ps1` permet d'obtenir les TTP générées dans les Windows Even
 
 Pour obtenir les TTP les plus communes (nombre d'occurence), on peut utiliser la commande suivante :
 ```powershell
-. Get-TTP.ps1
-' | Group-Object -Property TPP | ForEach-Object {     [PSCustomObject]@{
->>         TTP = $_.Name  # Reuse the category from the original objects
->>         Count = $_.Count
->>         EventDetail = $_.Group  # Retain the original objects in the group
->>     }} | Sort-Object -Property Count
+.\Get-TTP.ps1 | Group-Object -Property TPP | ForEach-Object {     [PSCustomObject]@{
+         TTP = $_.Name  # Reuse the category from the original objects
+         Count = $_.Count
+         EventDetail = $_.Group  # Retain the original objects in the group
+     }} | Sort-Object -Property Count
+```
+
+Pour mettre en lien les TTP générées dans les Windows Event par Aurora avec des groupes (APT) présent sur mitre, on peut réutiliser la commande précédente en ajoutant le script Match_APT_with_TTP :
+```powershell
+.\Get-TTP.ps1 | Group-Object -Property TPP | ForEach-Object {     [PSCustomObject]@{
+         TTP = $_.Name  # Reuse the category from the original objects
+         Count = $_.Count
+         EventDetail = $_.Group  # Retain the original objects in the group
+     }} | Sort-Object -Property Count | .\Match_APT_with_TTP
 ```
 
 Un exemple de sortie du script avec la commande précédente :
