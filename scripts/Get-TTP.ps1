@@ -1,21 +1,33 @@
-# Read script arguments (output file)
+# Read script arguments
 param (
+    [string]$outputToAFile = $false,
     [string]$outputFile = "TTPs.csv"
 )
 
-# Check if the output file already exists and ask for confirmation to overwrite
-if (Test-Path $outputFile) {
-    $overwrite = Read-Host "The file $outputFile already exists. Do you want to overwrite it? (Y/N)"
-    if ($overwrite -ne 'Y') {
-        Write-Host "Exiting script without overwriting the file." -ForegroundColor Yellow
-        exit
-    } else {
-        Remove-Item $outputFile -Force
+# Dictionary to match level names to their corresponding numbers
+$levelDictionary = @{
+    "low" = 1
+    "medium" = 2
+    "high" = 3
+    "critical" = 4
+}
+
+# check if the output file already exists and ask for confirmation to overwrite
+if ($outputToAFile -eq $true) {
+    if (Test-Path $outputFile) {
+        $overwrite = Read-Host "The file $outputFile already exists. Do you want to overwrite it? (Y/N)"
+        if ($overwrite -ne 'Y') {
+            Write-Host "Exiting script without overwriting the file." -ForegroundColor Yellow
+            exit
+        } else {
+            Remove-Item $outputFile -Force
+        }
     }
 }
 
+# Define the regex pattern for TTP numbers (TXXXX or TXXXX.XX)
+$pattern = "T\d{4}(\.\d{3})?"
 # Query events from the "Application" log for the "AuroraAgent" provider and format as XML
-$pattern = "T\d{4}"
 $Events = Get-WinEvent -LogName "Application" -FilterXPath "*[System[(Provider[@Name='AuroraAgent'])]]"
 
 # Initialize variables for progress tracking
@@ -42,11 +54,18 @@ $Events | ForEach-Object {
             $output = [PSCustomObject]@{
                 TPP = $matches[0]
                 EventTime = $eventXml.System.TimeCreated.SystemTime
+                Level = $levelDictionary[((($eventXml.EventData.Data | Where-Object { $_ -like "Rule_Level*" } | Select-Object -First 1) -split ':' | Select-Object -Last 1) -replace ' ', '')]
+                ParentCommandLine = ($eventXml.EventData.Data | Where-Object { $_ -like "ParentCommandLine*" } | Select-Object -First 1) -split ':' | Select-Object -Last 1
+                CommandLine = ($eventXml.EventData.Data | Where-Object { $_ -like "CommandLine*" } | Select-Object -First 1) -split ':' | Select-Object -Last 1
                 EventID = $eventXml.System.EventID.'#text'
-                RecordID = $eventXml.System.EventRecordID
             }
             # Write the output to a file
-            $output | Export-Csv -Path $outputFile -NoTypeInformation -Append
+            if($outputToAFile -eq $true) {
+                 $output | Export-Csv -Path $outputFile -NoTypeInformation -Append
+            } else {
+                # Store the output in a variable for later use
+                $output | Select-Object TPP, EventTime, Level, ParentCommandLine, CommandLine, EventID
+            }
         }
     }
 
@@ -57,4 +76,8 @@ $Events | ForEach-Object {
 
 # Completion message
 Write-Host "Processing complete." -ForegroundColor Green
-Write-Host "Results saved to TTPs.csv" -ForegroundColor Green
+if ($outputToAFile -eq $true) {
+    Write-Host "Results saved to TTPs.csv" -ForegroundColor Green
+} else {
+    return $output
+}
