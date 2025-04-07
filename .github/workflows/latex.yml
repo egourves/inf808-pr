@@ -19,7 +19,7 @@ jobs:
         with:
           root_file: rapport/main.tex
         env:
-          TEXINPUTS: ".:.//:"
+          TEXINPUTS: ".:../scripts:.//:"
       - name: Upload PDF
         uses: actions/upload-artifact@v4
         with:
