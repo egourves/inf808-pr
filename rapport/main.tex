@@ -57,7 +57,7 @@ Ces dernières évoluent rapidement et représentent un réel danger que ce soit
 Ainsi, il est important de se prémunir de ces menaces par la mise en place progressive et proactive de contrôles de sécurité.
 C'est pourquoi ce projet vise à reproduire des attaques ou ensembles d'attaques connues en s'appuyant sur le cadre MITRE ATT\&CK.
 Pour cela, nous utiliserons l'outil d'émulation Caldera puis l'attaque sera analysé et détecté à l'aide d'un EDR comme Aurora.
-Enfin, nous traiterons les données obtenues à l'aide d'outils comme le Windows Event Viewer.
+Enfin, nous traiterons les données obtenues à l'aide d'outils comme le \verb|Windows Event Viewer|.
 
 \bigskip
 
@@ -128,7 +128,7 @@ De plus, une version gratuite est disponible pour un usage restreint.
 
 \bigskip
 
-Aurora utilise les Windows Event pour remonter les comportements suspects qu'il détecte.
+Aurora utilise les \verb|Windows Event| pour remonter les comportements suspects qu'il détecte.
 Windows dispose d'une interface graphique pour visualiser les journaux d'événements, mais il est également possible de les analyser à l'aide de PowerShell.
 Cette dernière méthode est particulièrement intéressante car elle permet d'automatiser l'analyse des journaux à l'aide d'un language puissant et flexible.
 
@@ -276,6 +276,10 @@ Ci-dessous, un schéma de l'architecture de notre projet :
     \caption{Architecture de l'environnement de travail}
     \label{fig:architecture}
 \end{figure}
+
+L'ensemble du projet est disponible sur Github \cite{EgourvesInf808prINF808a}.
+Le dépôt contient l'ensemble des scripts utilisés pour l'analyse des journaux, le code source de ce rapport, ainsi que les nécessaire pour déployer les containeurs Docker.
+
 \subsubsection{Fonctionnalités}
 
 Les principales fonctionnalités de Tailscale incluent :
@@ -313,7 +317,16 @@ L'étude est composée de plusieurs étapes clées : \\
 Dans une premier temps, nous allons réaliser une étude préalable pour comprendre et maîtriser les différents outils présentés précedemment.
 Ensuite, nous allons émuler plusieurs APT afin d'évaluer l'efficacité de l'outil Caldera dans un premier temps.
 Puis, dans un second temps, nous analyserons l'utilité des outils de détection comme Aurora ainsi que les difficultés liées.
-Enfin, nous conclurons quant à l'utilité et les forces des outils présentés 
+Enfin, nous conclurons quant à l'utilité et les forces des outils présentés.
+Ci-dessous, un calendrier résumant les différentes étapes de l'étude :
+\begin{itemize}
+    \item \textbf{Étude préalable (7 janvier - 11 février)} : Choix des outils et du sujet
+    \item \textbf{Prise en main des outils (11 février - 4 mars)} : Installation et prise en main des outils
+    \item \textbf{Mise en place du premier scénario (4 mars - 11 mars)} : Émulation d'une attaque simple
+    \item \textbf{Mise en place du second scénario (11 mars - 1 avril)} : Émulation d'une attaque complexe (Akira)
+    \item \textbf{Analyse des résultats (1 avril - 8 avril)} : Analyse des journaux d'Aurora et des résultats obtenus
+    \item \textbf{Rédaction du rapport (1 avril - 8 avril)} : Rédaction du rapport de l'étude et réalisation de la présentation
+\end{itemize}
 
 \subsection{Étude préalable}
 \subsubsection{Installation des outils}
@@ -572,15 +585,79 @@ PS C:\Users\Administrator> .\Get-TTP.ps1 | Group-Object -Property TPP | ForEach-
 Au final, on obtient une liste d'APT qui utilisent les TTPs repérées par Aurora.
 L'APT Akira ne fait pas partie de la liste.
 
-\section{Observation}
+\section{Observations}
+\subsection{Résultats du projet}
+Dans ce projet, nous avons réaliser les étapes suivantes :
+\begin{itemize}
+    \item Prise en main des outils
+    \item Émulation d'une attaque simple
+    \item Émulation d'une attaque complexe
+    \item Analyse des journaux d'Aurora
+    \item Identification des APTs
+\end{itemize}
+Nous avons donc pu réaliser une étude complète sur l'émulation d'APT et la détection de ces dernières.
 
-APT trouvées correspondent pas à AKIRA
-=> Tous les TTPs ne sont pas forcément détectés par Aurora
-=> méthode pas forcément fiable
+\subsubsection{Succès}
+\begin{itemize}
+    \item Émuler le comportement d'un APT : nous avons pu créer un adversaire provenant de la base MITRE ATT\&CK et l'émuler avec Caldera.
+    \item Automatiser la recherche de TTPs dans les journaux d'Aurora : nous avons pu retrouver certains TTPs dans les journaux d'Aurora de manière automatisée.
+    \item Attribuer des TTPs à des APTs : nous avons pu attribuer certaines TTPs à des APTs.
+\end{itemize}
+\subsubsection{Échecs}
+\begin{itemize}
+    \item Relier les journaux à l'APT Akira : nous avons pu relier les journaux d'Aurora aux TTPs mais pas à l'APT Akira en particulier.
+\end{itemize}
+
+\subsection{Observations sur Caldera}
+
+\subsection{Observations sur Aurora}
+
+\subsection{Observations sur la liaison entre les TTPs et les APTs}
+Les APT trouvées ne correspondent pas à l'APT Akira. Cela peut s'expliquer par plusieurs raisons.
+Tout d'abord, il est possible que tous les TTPs utilisés par Akira ne soient pas détectés par Aurora.
+En effet, bien que l'outil soit performant, il repose sur des règles et des modèles qui peuvent ne pas couvrir l'ensemble des techniques utilisées par un attaquant.
+
+\bigskip
+
+Ensuite, la méthode utilisée pour relier les TTPs aux APTs n'est pas infaillible.
+Elle repose sur une correspondance entre les TTPs détectées et celles répertoriées dans la base de données MITRE ATT\&CK.
+Cependant, cette correspondance peut être incomplète ou imprécise, notamment si certaines techniques ne sont pas documentées ou si des variations dans leur mise en œuvre ne sont pas prises en compte.
+Cela passe par exemple par l'ajout de règles Sigma pour enrichir la capacité de reconaissance d'Aurora.
+
+\bigskip
+
+En conséquence, bien que cette méthode permette d'obtenir des indices sur les APTs potentielles, elle ne peut pas être considérée comme totalement fiable pour identifier avec certitude un attaquant spécifique comme Akira.
+Il serait nécessaire d'améliorer les capacités de détection d'Aurora, d'enrichir les bases de données de TTPs et d'APT, et de combiner cette approche avec d'autres méthodes d'analyse pour obtenir des résultats plus précis.
+
+\subsection{Recommandations}
 
 \section{Conclusion}
 
+\subsection{Résumé}
+Ce rapport explore l'émulation d'attaques avancées persistantes (APT) à l'aide de l'outil Caldera et l'analyse des journaux de détection avec Aurora EDR.
+Après une étude préalable des outils et leur prise en main, deux scénarios ont été réalisés : une attaque simple pour tester les fonctionnalités de base de Caldera, et une attaque complexe basée sur le rançongiciel Akira.
+Ces scénarios ont permis de simuler des techniques issues du cadre MITRE ATT\&CK et d'observer leur détection par Aurora, tout en automatisant l'analyse des journaux pour identifier les TTPs (Tactics, Techniques, and Procedures).
 
+\bigskip
+
+Les résultats montrent que Caldera est efficace pour émuler des attaques et tester les capacités de détection des outils comme Aurora.
+Les scripts développés ont permis d'extraire automatiquement les TTPs des journaux d'Aurora et de les associer à des APTs potentielles en utilisant la base de données MITRE ATT\&CK.
+Cependant, certaines limitations ont été identifiées, notamment l'incapacité à relier précisément les journaux à l'APT Akira, ce qui souligne la nécessité d'améliorer les capacités de détection en enrichissant les bases de données utilisées ou en changant la méthode utilisée pour faire le rapprochement.
+
+\bigskip
+
+En conclusion, ce projet met en lumière l'importance de l'émulation d'attaques pour renforcer la cybersécurité et propose des pistes d'amélioration, comme l'intégration de règles Sigma pour enrichir Aurora ou l'automatisation des tâches de détection.
+Ces travaux ouvrent la voie à des prolongements, notamment la création d'un outil de détection d'APT basé sur les scripts développés, pouvant être intégré dans des environnements Windows pour une surveillance proactive.
+
+\subsection{Prolongement}
+
+Avec les scripts de détection de TTPs et reconaissance d'APT, il est possible de créer un outil de détection d'APT.
+On pourrait utiliser ces derniers dans une tâche journalière sur les hôtes Windows avec l'outil \verb|Task Scheduler| \cite{mensHowCreatePowerShell2023}.
+
+Un exemple de tâche planifiée serait de lancer la commande suivante :
+\lstinputlisting[caption={Tâche planifiée}, label={task-scheduler}]{../scripts/Push-TTP-APT.ps1}
+
+Cette commande permettrait de d'utiliser les scripts précédents pour détecter les TTPs et les APTs sur l'hôte Windows puis envoyer un rapport par mail.
 
 \newpage
 \section{Listings}

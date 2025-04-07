@@ -2,3 +2,4 @@ rapport/out/
 docker/caldera
 *.env
 *.DS_Store
+*.bkp
