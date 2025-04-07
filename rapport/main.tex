@@ -13,6 +13,7 @@
 \usepackage{array}
 \usepackage{stmaryrd}
 \usepackage{hyperref} % Placed here in the preamble
+\usepackage{subcaption}
 \RequirePackage[left=3cm,right=3cm,top=3cm,bottom=3cm]{geometry} 
 \newcommand{\HRule}{\rule{\linewidth}{0.5mm}}
 \hypersetup{
@@ -203,7 +204,13 @@ Tailscale est particulièrement adapté pour les environnements de travail distr
 \bigskip
 
 De fait, l'outil va permet de créer une infrastructure pour le projet avec le déploiement de CALDERA et d'une machine virutelle cible sur Windows. Chaque machine peut communiquer directement avec l'autre et cela va nous permettre de travailler sur le projet de manière efficace sans nécessité de se connecter à un réseau local configuré.
-
+Ci-dessous, un schéma de l'architecture de notre projet :
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.5\textwidth]{images/infra_scheme.png}
+    \caption{Architecture de l'environnement de travail}
+    \label{fig:architecture}
+\end{figure}
 \subsubsection{Fonctionnalités}
 
 Les principales fonctionnalités de Tailscale incluent :
@@ -248,7 +255,7 @@ Enfin, nous conclurons quant à l'utilité et les forces des outils présentés
 La première étape de l'étude a consisté à installer les différents outils présentés précédemment. \\
 
 Pour commencer, nous avons utiliser Tailscale pour créer un réseau virtuel qui nous sert d'environnement de travail. \\
-Ensuite, nous avons instancié caldera dans un conteneur Docker. Nous avons rencontré ensuite certaines difficultés pour le faire fonctionner dans ce même conteneur, puis de se connecter à l'interface web depuis une autre machine du réseau virtuel. \\
+Ensuite, nous avons instancié Caldera dans un conteneur Docker. Nous avons rencontré ensuite certaines difficultés pour le faire fonctionner dans ce même conteneur, puis de se connecter à l'interface web depuis une autre machine du réseau virtuel. \\
 Enfin, nous avons déployer une machine virtuelle Windows serveur 2019 sur laquelle nous avons installé l'EDR Aurora. On aura par la suite configuré un Active Directory (AD) sur cette même machine pour une simulation plus proche d'un environnement d'entreprise.
 
 \subsubsection{Prise en main des outils}
@@ -266,12 +273,217 @@ Enfin, nous avons déployer une machine virtuelle Windows serveur 2019 sur laque
 
 
 \subsection{Premier scénario}
+Ce premier scénario a pour objectif de prendre en main les différentes composantes de Caldera telles que :
+\begin{itemize}
+    \item Techniques
+    \item Adversaires
+    \item Opérations
+\end{itemize}
+
+Dans ce dernier, nous avions pour objectif de simuler une attaque simple.
+Ainsi, nous avons choisi d'effectuer une extraction de données sur le système cible Windows Server.
+
+Pour cela, nous avons créer deux techniques :
+\begin{itemize}
+    \item \textbf{T1005} : Data from Local System
+    \item \textbf{T1003.003} : Exfiltration Over Web Service : Exfiltration to Cloud Storage
+\end{itemize}
+
+La première technique utilise l'outil \verb|ntdsutil| pour exfiltrer les données de l'Active Directory.
+C'est un outil de ligne de commande qui permet d'interagir avec la base de données Active Directory.
+Il est utilisé pour effectuer des opérations de maintenance et de gestion sur les bases de données AD.
+Il permet notamment d'extraire la base de données AD, de la sauvegarder ou de la restaurer.
+
+Ainsi, nous allons générer le fichier \verb|ntds.dit| qui contient les informations de l'Active Directory à l'aide de la commande suivante :
+\lstinputlisting[caption={Data From Local System}]{../scripts/Get-NTDS.ps1}
+
+La seconde technique utilise un serveur web externe pour exfiltrer les données à l'aide d'une requête POST :
+\lstinputlisting[caption={Exfiltration Over Web Service}]{../scripts/Push-NTDS.ps1}
+Cette commande va permettre d'exfiltrer le fichier \verb|ntds.dit| vers le serveur web externe. \\
+
+Nous avons ensuite créer un adversaire qui va utiliser ces deux techniques. \\
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{images/caldera/apt0_adversary.png}
+    \caption{Adversaire APT0}
+    \label{fig:apt0_adversary}
+\end{figure}
+
+Finalement, nous pouvons lancer une opération et observer le résultat sur Caldera.
+On remarque que les deux techniques ont bien été exécutées, sur l'hôte WIN-41SLDMUH9VC et que la sortie de la seconde commande affiche bien un succès.
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}{1\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{images/caldera/apt0_operation.png}
+        \caption{Affiche des techniques utilisées}
+        \label{fig:apt0_operation_1}
+    \end{subfigure}
+    \begin{subfigure}{0.3\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{images/caldera/apt0_operation_result.png}
+        \caption{Résultat de la seconde technique}
+        \label{fig:apt0_operation_2}
+    \end{subfigure}
+    \caption{Opération pour APT0}
+\end{figure}
+
 \subsection{Second scénario}
-\subsection{Troisième scénario}
+
+Dans ce second scénario, nous allons émuler une attaque plus complexe.
+Nous avons choisi d'émuler l'APT \textbf{AKIRA} qui est un rançongiciel.
+
+Voici les techniques utilisées :
+\begin{table}[h!]
+    \centering
+    \begin{tabular}{|l|l|p{10cm}|}
+        \hline
+        \textbf{Domain} & \textbf{ID} & \textbf{Name and Use} \\ \hline
+        Enterprise & T1531 & \textbf{Account Access Removal}: Akira deletes administrator accounts in victim networks prior to encryption. \\ \hline
+        Enterprise & T1560.001 & \textbf{Archive Collected Data: Archive via Utility}: Akira uses utilities such as WinRAR to archive data prior to exfiltration. \\ \hline
+        Enterprise & T1486 & \textbf{Data Encrypted for Impact}: Akira encrypts files in victim environments as part of ransomware operations. \\ \hline
+        Enterprise & T1213.002 & \textbf{Data from Information Repositories: SharePoint}: Akira has accessed and downloaded information stored in SharePoint instances as part of data gathering and exfiltration activity. \\ \hline
+        Enterprise & T1482 & \textbf{Domain Trust Discovery}: Akira uses the built-in Nltest utility or tools such as AdFind to enumerate Active Directory trusts in victim environments. \\ \hline
+        Enterprise & T1567.002 & \textbf{Exfiltration Over Web Service: Exfiltration to Cloud Storage}: Akira will exfiltrate victim data using applications such as Rclone. \\ \hline
+        Enterprise & T1133 & \textbf{External Remote Services}: Akira uses compromised VPN accounts for initial access to victim networks. \\ \hline
+        Enterprise & T1657 & \textbf{Financial Theft}: Akira engages in double-extortion ransomware, exfiltrating files then encrypting them, in order to prompt victims to pay a ransom. \\ \hline
+        Enterprise & T1219 & \textbf{Remote Access Software}: Akira uses legitimate utilities such as AnyDesk and PuTTy for maintaining remote access to victim environments. \\ \hline
+        Enterprise & T1018 & \textbf{Remote System Discovery}: Akira uses software such as Advanced IP Scanner and MASSCAN to identify remote hosts within victim networks. \\ \hline
+        Enterprise & T1078 & \textbf{Valid Accounts}: Akira uses valid account information to remotely access victim networks, such as VPN credentials. \\ \hline
+    \end{tabular}
+    \caption{Techniques utilisées par le rançongiciel Akira}
+    \label{tab:akira_techniques}
+\end{table}
+
+Nous avons donc créer un adversaire qui va utiliser ces techniques.
+
+\begin{figure}[h!]
+    \centering
+    \includegraphics[width=1\textwidth]{images/caldera/akira_adversary.png}
+    \caption{Adversaire APT AKIRA}
+    \label{fig:akira_adversary}
+\end{figure}
+
+Dans la liste des cacacités proposés par Caldera (provenant d'Atomic Red Team), nous avons choisi d'utiliser les capacités les plus proches des descriptions fournies par MITRE ATT\&CK.
+Nous avons donc utilisé les capacités suivantes :
+
+
+
+Cependant, il a fallu corriger certaines capacités pour qu'elles soient compatibles avec notre environnement. 
+
+
+Une fois les opérations menées, il reste à analyser les journaux de l'EDR Aurora pour voir si les techniques ont bien été détectées. \\
+Pour cela, il suffit de lancer l'outil Aurora et de se rendre dans l'application Event Viewer de Windows.
+Les journaux d'Aurora se trouvent dans le cannal \verb|Application| et la source est \verb|AuroraAgent|.
+Ci-dessous, un exemple de journal d'Aurora vu dans l'Event Viewer :
+
+\begin{figure}[h!]
+    \centering
+    \begin{subfigure}{0.9\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{images/windows/event_viewer1.png}
+        \caption{Première partie du journal}
+        \label{fig:event_viewer_1}
+    \end{subfigure}
+    \begin{subfigure}{0.9\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{images/windows/event_viewer2.png}
+        \caption{Seconde partie du journal}
+        \label{fig:event_viewer_2}
+    \end{subfigure}
+    \caption{Journal d'Aurora}
+\end{figure}
+
+On remarque qu'Aurora a bien détecté l'attaque et mentionne également des techniques utilisées par l'attaquant, ici T1219.
+Si l'on regarde dans la liste des techniques de l'attaquant, on remarque que la technique T1219 est bien présente dans la liste des techniques utilisées par l'attaquant.
+Il s'agit de la technique \textbf{Remote Access Software} qui correspond à l'utilisation de logiciels de prise de contrôle à distance comme AnyDesk ou PuTTy. \\
+
+À présent, nous avons voulu automatiser la recherche de journaux d'Aurora. Pour cela, nous avons utilisé le module \verb|Get-WinEvent| de PowerShell.
+Celui-ci permet de récupérer les journaux d'événements de Windows. Il est possible de filtrer pour ne récupérer que les événements d'Aurora.
+Ci-dessous, l'extrait d'un premier script qui permet de récupérer les informations suivantes provenants des journaux d'Aurora :
+\begin{itemize}
+    \item \textbf{ID} : ID de l'événement
+    \item \textbf{TimeCreated} : Date et heure de création de l'événement
+    \item \textbf{TTP} : TTP utilisé
+    \item \textbf{Level} : Niveau de l'événement selon Aurora
+    \item \textbf{CommandLine} : Ligne de commande utilisée
+    \item \textbf{ParentCommandLine} : Ligne de commande du processus parent
+\end{itemize}
+
+\begin{lstlisting}[caption={Récupération des journaux d'Aurora}, label={lst:aurora_logs}]
+$events = Get-WinEvent -LogName "Application" -FilterXPath "*[System[Provider[@Name='AuroraAgent']]]"
+\end{lstlisting}
+
+On utilise la commande \verb|Get-WinEvent| avec un filtre XPath pour ne récupérer que les événements d'Aurora. 
+On filtre ensuite les données pour ne garder que les informations que l'on souhaite.
+Ce premier script nous permet d'obtenir les TTP les plus courantes repérées par Aurora.
+Dans nos essais, le script a pu travailler sur 1135 événements d'Aurora et a pu extraire 282 TTPs :
+
+\begin{lstlisting}[caption={Recherche des TTP dans les journaux d'Aurora}, label={lst:ttp_logs}]
+PS C:\Users\Administrator> .\Get-TTP.ps1 | Group-Object -Property TPP | ForEach-Object {[PSCustomObject]@{
+    TTP = $_.Name
+    Count = $_.Count
+    EventDetail = $_.Group
+}} | Sort-Object -Property Count
+
+    TTP       Count EventDetail
+    ---       ----- -----------
+    T1027.004     1 {@{TPP=T1027.004;...
+    T1047         1 {@{TPP=T1047;...
+    T1562.004     2 {@{TPP=T1562.004;...
+    T1059.001     2 {@{TPP=T1059.001;...
+    T1053.005     7 {@{TPP=T1053.005;...
+    T1560.001    18 {@{TPP=T1560.001;...
+    T1087.002    27 {@{TPP=T1087.002;...
+    T1219       224 {@{TPP=T1219;...
+\end{lstlisting}
+
+
+Au final, la combinaison des deux scripts nous permet d'obtenir une liste d'APT qui seraient susceptibles d'utiliser les TTP repérées par Aurora.
+\begin{lstlisting}[caption={Identification des APTs}, label={lst:apt_logs}]
+PS C:\Users\Administrator> .\Get-TTP.ps1 | Group-Object -Property TPP | ForEach-Object {[PSCustomObject]@{
+    TTP = $_.Name
+    Count = $_.Count
+    EventDetail = $_.Group
+}} | Sort-Object -Property Count | .\Match-TTP-APT.ps1
+
+    [+] Analyse des TTP extraits avec MITRE ATT&CK...
+    [*] Téléchargement de la base ATT&CK...
+
+    ==== TOP GROUPES IDENTIFIÉS ====
+
+    GroupName     MatchCount MatchingTTPs
+    ---------     ---------- ------------
+    MuddyWater             7 T1027.004, T1047, T1053.005, T1059.001, T1087.002, T1219, T1560.001
+    ToddyCat               6 T1047, T1053.005, T1059.001, T1087.002, T1560.001, T1562.004
+    FIN13                  5 T1047, T1053.005, T1059.001, T1087.002, T1560.001
+    Mustang Panda          5 T1047, T1053.005, T1059.001, T1219, T1560.001
+    menuPass               5 T1047, T1053.005, T1059.001, T1087.002, T1560.001
+    Wizard Spider          5 T1047, T1053.005, T1059.001, T1087.002, T1560.001
+    Magic Hound            5 T1047, T1053.005, T1059.001, T1560.001, T1562.004
+    Kimsuky                5 T1053.005, T1059.001, T1219, T1560.001, T1562.004
+    Chimera                5 T1047, T1053.005, T1059.001, T1087.002, T1560.001
+    APT41                  5 T1047, T1053.005, T1059.001, T1087.002, T1560.001
+\end{lstlisting}
+
+
+
 \section{Observation}
+
+APT trouvées correspondent pas à AKIRA
+=> Tous les TTPs ne sont pas forcément détectés par Aurora
+=> méthode pas forcément fiable
+
 \section{Conclusion}
 
 
+
+\newpage
+\section{Listings}
+\lstinputlisting[caption={Exfiltration Over Web Service}, label={get-ttp}]{../scripts/Get-TTP.ps1}
+
+\lstinputlisting[caption={Exfiltration Over Web Service}, label={match-ttp}]{../scripts/Match-TTP-APT.ps1}
 
 \newpage
 \bibliographystyle{unsrtnat} % or any other style like apalike, alpha, etc.

