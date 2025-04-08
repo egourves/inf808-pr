@@ -43,13 +43,25 @@ Pour obtenir les TTP les plus communes (nombre d'occurence), on peut utiliser la
      }} | Sort-Object -Property Count
 ```
 
+Un exemple de sortie du script avec la commande précédente :
+```powershell
+T1027.004     1 {@{TPP=T1027.004; EventTime=2025-04-05T23:38:37.487153400Z; Level=2; …
+T1047         1 {@{TPP=T1047; EventTime=2025-04-05T23:17:51.812186200Z; Level=2; Pare…
+T1059.001     2 {@{TPP=T1059.001; EventTime=2025-04-06T00:45:33.106045900Z; Level=2; …
+T1562.004     2 {@{TPP=T1562.004; EventTime=2025-04-05T23:09:57.467157400Z; Level=2; …
+T1053.005     7 {@{TPP=T1053.005; EventTime=2025-04-05T23:38:51.527068600Z; Level=2; …
+T1560.001    18 {@{TPP=T1560.001; EventTime=2025-04-06T02:24:49.288111200Z; Level=3; …
+T1087.002    27 {@{TPP=T1087.002; EventTime=2025-04-06T02:26:21.033853800Z; Level=3; …
+T1219       224 {@{TPP=T1219; EventTime=2025-04-06T02:20:57.869721300Z; Level=2; Pare…
+```
+
 Pour mettre en lien les TTP générées dans les Windows Event par Aurora avec des groupes (APT) présent sur mitre, on peut réutiliser la commande précédente en ajoutant le script Match_APT_with_TTP :
 ```powershell
 .\Get-TTP.ps1 | Group-Object -Property TPP | ForEach-Object {     [PSCustomObject]@{
          TTP = $_.Name  # Reuse the category from the original objects
          Count = $_.Count
          EventDetail = $_.Group  # Retain the original objects in the group
-     }} | Sort-Object -Property Count | .\Match_APT_with_TTP
+     }} | Sort-Object -Property Count | .\Match-TTP-ATP.ps1
 ```
 
 Il est possible d'automatiser les tâches sur Windows à l'aide d'un planificateur de tâche qui enverra le résultat de la commande ci-dessus par mail à l'aide de cette commande : 
@@ -58,7 +70,7 @@ $body = .\Get-TTP.ps1 | Group-Object -Property TPP | ForEach-Object {     [PSCus
                  TTP = $_.Name  # Reuse the category from the original objects
                  Count = $_.Count
                  EventDetail = $_.Group  # Retain the original objects in the group
-             }} | Sort-Object -Property Count | .\Match_APT_with_TTP | Out-String
+             }} | Sort-Object -Property Count | .\Match-TTP-ATP.ps1 | Out-String
 $params = @{
     To = 'NetworkAdmin@inf808.com'
     From = 'no-reply-psh@inf808.com'
@@ -67,16 +79,4 @@ $params = @{
     SmtpServer = 'smtp.inf808.com'
 }
 Send-MailMessage @params
-```
-
-Un exemple de sortie du script avec la commande précédente :
-```powershell
-T1027.004     1 {@{TPP=T1027.004; EventTime=2025-04-05T23:38:37.487153400Z; Level=2; ParentCommandLine= powershell; CommandLine=\Users\A…
-T1047         1 {@{TPP=T1047; EventTime=2025-04-05T23:17:51.812186200Z; Level=2; ParentCommandLine="127.0.0.1" product where "name like …"
-T1059.001     2 {@{TPP=T1059.001; EventTime=2025-04-06T00:45:33.106045900Z; Level=2; ParentCommandLine=FromBase64String('CiR1dWlkPSI1ZDk…'
-T1562.004     2 {@{TPP=T1562.004; EventTime=2025-04-05T23:09:57.467157400Z; Level=2; ParentCommandLine=; CommandLine=; EventID=99}, @{TP…
-T1053.005     7 {@{TPP=T1053.005; EventTime=2025-04-05T23:38:51.527068600Z; Level=2; ParentCommandLine=; CommandLine=; EventID=99}, @{TP…
-T1560.001    18 {@{TPP=T1560.001; EventTime=2025-04-06T02:24:49.288111200Z; Level=3; ParentCommandLine=//ts-caldera.tailce1ce1.ts.net -g…
-T1087.002    27 {@{TPP=T1087.002; EventTime=2025-04-06T02:26:21.033853800Z; Level=3; ParentCommandLine= powershell.exe -ExecutionPolicy …
-T1219       224 {@{TPP=T1219; EventTime=2025-04-06T02:20:57.869721300Z; Level=2; ParentCommandLine=\Users\Administrator\Desktop\AnyDesk.…
 ```

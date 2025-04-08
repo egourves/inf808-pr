@@ -1,5 +1,4 @@
 \documentclass[12pt,letterpaper]{article}
-\usepackage[T1]{fontenc}
 \usepackage{graphicx} % Required for inserting images
 \usepackage{listings}
 \usepackage{xcolor}
@@ -656,7 +655,7 @@ Ces travaux ouvrent la voie à des prolongements, notamment la création d'un ou
 Avec les scripts de détection de TTPs et reconaissance d'APT, il est possible de créer un outil de détection d'APT.
 On pourrait utiliser ces derniers dans une tâche journalière sur les hôtes Windows avec l'outil \verb|Task Scheduler| \cite{mensHowCreatePowerShell2023}.
 
-Un exemple de tâche planifiée serait de lancer la commande suivante :
+Un exemple de tâche planifiée serait de lancer la commande suivante tous les jours :
 \lstinputlisting[caption={Tâche planifiée}, label={task-scheduler}]{../scripts/Push-TTP-APT.ps1}
 
 Cette commande permettrait de d'utiliser les scripts précédents pour détecter les TTPs et les APTs sur l'hôte Windows puis envoyer un rapport par mail.
