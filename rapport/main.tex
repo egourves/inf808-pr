@@ -393,7 +393,9 @@ Ainsi, nous allons générer le fichier \verb|ntds.dit| qui contient les informa
 On retrouvera donc la base de données de l'Active Directory \verb|ntds.dit| dans le répertoire \verb|C:\Windows\Temp\NTDS\Active Directory\|.
 La seconde technique utilise un serveur web externe pour exfiltrer ces données à l'aide d'une requête POST :
 \lstinputlisting[caption={Exfiltration Over Web Service}]{../scripts/Push-NTDS.ps1}
-Cette commande va permettre d'exfiltrer le fichier \verb|ntds.dit| vers le serveur web externe qui se trouve également sur le Tailnet. \\
+Cette commande permet d'exfiltrer le fichier \verb|ntds.dit| vers le serveur web externe qui se trouve également sur le Tailnet.
+
+\bigskip
 
 Nous avons ensuite créé un adversaire qui va utiliser ces deux techniques dans la partie \textit{Adversaries} de Caldera.
 Il s'agit ici de l'adversaire \textbf{APT0}, un adversaire fictif pour ce premier scénario.
