@@ -48,7 +48,7 @@
 \newpage
 \section{Introduction}
 
-À l'heure où les technologies prennent toujours plus de place dans les infrastructure des entreprises et dans notre quotidien, de nouvelles menaces surgissent.
+À l'heure où les technologies prennent toujours plus de place dans les infrastructures des entreprises et dans notre quotidien, de nouvelles menaces surgissent.
 Ces dernières évoluent rapidement et représentent un réel danger que ce soit pour les entreprises comme pour les consommateurs.
 
 \bigskip
@@ -61,9 +61,9 @@ Enfin, nous traiterons les données obtenues à l'aide d'outils comme le \verb|W
 \bigskip
 
 L'objectif de cette étude est de comprendre le comportement des attaquants dans un premier temps.
-Puis, d'évaluer la difficulté de détection d'une attaque soigneusement préparée.
+Puis d'évaluer la difficulté de détection d'une attaque soigneusement préparée.
 Nous essaierons ensuite de lier les données obtenues avec le cadre MITRE ATT\&CK pour tenter de retrouver les APT émulés.
-Cette étude va également nous permettre de renforcer nos connaissances établis lors du cours INF808.
+Cette étude va également nous permettre de renforcer nos connaissances établies lors du cours INF808.
 
 \bigskip
 
@@ -89,10 +89,10 @@ Par conséquent, pour réaliser à bien ce projet, on peut définir les sous-obj
     \item Être capable de trier et d'analyser des journaux, à l'aide d'outils comme des EDR afin de détecter des attaques potentielles.
     \item Analyser les résultats obtenus.
     \item Conclure sur l'efficacité de la méthode.
-    \item Établir des recommandations sur des possibilité d'amélioration de la méthode.
+    \item Établir des recommandations sur des possibilités d'amélioration de la méthode.
 \end{itemize}
 
-Ce projet nous permet donc de mettre en place un cadre de travail pour réaliser divers attaques trouvées à l'aide de l'outil MITRE ATT\&CK.
+Ce projet nous permet donc de mettre en place un cadre de travail pour réaliser diverses attaques trouvées à l'aide de l'outil MITRE ATT\&CK.
 Nous pourrons ensuite analyser les résultats pour tenter de corréler les journaux avec les attaques.
 Cela nous permettra de mieux comprendre le déroulement de ces actions et de saisir les difficultés qui en ressortent.
 
@@ -105,7 +105,7 @@ C'est un cadre de référence pour les équipes de sécurité afin de mieux comp
 
 Pour les entreprises, il peut être intéressant de simuler des attaques afin de tester la sécurité de leurs systèmes d'informations.
 C'est pourquoi divers outils existent pour émuler des attaques tels que Caldera, Metasploit ou encore Cobalt Strike.
-Ces deux derniers sont cependants des outils manuels. Or, simuler le comportement d'un attaquant est une tâche complexe et fastidieuse.
+Ces deux derniers sont cependant des outils manuels. Or, simuler le comportement d'un attaquant est une tâche complexe et fastidieuse.
 Ainsi disposer d'outils permettant d'automatiser cette tâche est un réel atout pour les entreprises.
 
 \bigskip
@@ -122,14 +122,14 @@ Quant à l'analyse des journaux, c'est une tâche essentielle pour détecter les
 Les EDR (Endpoint Detection and Response) sont des outils qui permettent de collecter et d'analyser les journaux d'événements sur les terminaux.
 Ils utilisent ensuite les données récoltées pour fournir une réponse automatique et adaptée aux incidents.
 Dans le domaine, il existe de nombreux outils comme SentinelOne, CrowdStrike ou encore Aurora EDR.
-Ce dernier est vendu comme une solution légère et particulièrement personalisable.
+Ce dernier est vendu comme une solution légère et particulièrement personnalisable.
 De plus, une version gratuite est disponible pour un usage restreint.
 
 \bigskip
 
 Aurora utilise les \verb|Windows Event| pour remonter les comportements suspects qu'il détecte.
 Windows dispose d'une interface graphique pour visualiser les journaux d'événements, mais il est également possible de les analyser à l'aide de PowerShell.
-Cette dernière méthode est particulièrement intéressante car elle permet d'automatiser l'analyse des journaux à l'aide d'un language puissant et flexible.
+Cette dernière méthode est particulièrement intéressante, car elle permet d'automatiser l'analyse des journaux à l'aide d'un langage puissant et flexible.
 
 \newpage
 \section{Les Outils}
@@ -201,7 +201,7 @@ Le logiciel a été conçu pour répondre aux besoins suivants :
 
 \subsubsection{Cas d'usage}
 
-Les cadre d'utilisation de la plateforme sont les suivants :
+Les cadres d'utilisation de la plateforme sont les suivants :
 \begin{itemize}
     \item \textbf{Red Teaming et Blue Teaming}.
     \item \textbf{Tests des outils de détection} (SIEM, EDR, etc.).
@@ -211,21 +211,21 @@ Les cadre d'utilisation de la plateforme sont les suivants :
 \subsection{Aurora EDR}
 
 Aurora EDR est une solution de détection et de réponse des terminaux (EDR) développée par Nextron Systems.
-Notre choix s'est porté sur Aurora pour analyser les journaux car il tourne localement sur les terminaux, réduisant donc l'impact sur les ressources système et limitant les fuites de données sensibles à l'extérieur du réseau.
-L'outil peut fonctionner sur des systèmes aux ressources limitées, grâce à sa légereté et son efficacité, faisant de ce dernier un bon choix.
+Notre choix s'est porté sur Aurora pour analyser les journaux, car il tourne localement sur les terminaux, réduisant donc l'impact sur les ressources système et limitant les fuites de données sensibles à l'extérieur du réseau.
+L'outil peut fonctionner sur des systèmes aux ressources limitées, grâce à sa légèreté et à son efficacité, faisant de ce dernier un bon choix.
 
 \bigskip
 
 De plus, Aurora utilise les règles Sigma pour établir des profils et détecter des menaces, tout en étant totalement transparent.
 Ces règles proviennent de la communauté open-source et sont utilisées par de nombreux outils de détection.
 Cela permet d'utiliser un autre cadre commun et supporté par de nombreux outils de sécurité.
-Il est par exemple possible d'écrirer des règles Sigma pour détecter des menaces spécifiques et de les intégrer dans Aurora.
+Il est par exemple possible d'écrire des règles Sigma pour détecter des menaces spécifiques et de les intégrer dans Aurora.
 
 
 
 \subsubsection{Fonctionnalités}
 
-Aurora possède de nombreuses fonctionnalités dont les principales sont :
+Aurora possède de nombreuses fonctionnalités. Les principales sont :
 \begin{itemize}
     \item \textbf{Détecter les comportements anormaux} en temps réel.
     \item \textbf{Identifier les menaces} basés sur des schémas d'attaques, en cherchant les déviances avec des comportements normaux.
@@ -237,7 +237,7 @@ Aurora possède de nombreuses fonctionnalités dont les principales sont :
 
 \subsubsection{Avantages de l'outil}
 
-L'outil représente un atout pour les entreprises de part sa capacité à réaliser les tâches suivantes :
+L'outil représente un atout pour les entreprises de par sa capacité à réaliser les tâches suivantes :
 \begin{enumerate}
     \item Détecter des menaces avancées.
     \item Réagir rapidement aux attaques en appliquant automatiquement des mitigations.
@@ -247,7 +247,7 @@ L'outil représente un atout pour les entreprises de part sa capacité à réali
 
 \subsubsection{Application}
 
-Aurora EDR est principalement utilisé pour répondre aux besoins suivants : protéger les système contre les rançongiciels, détecter des APT, automatiser la réponse aux incidents et aider les enquêteurs.
+Aurora EDR est principalement utilisé pour répondre aux besoins suivants : protéger les systèmes contre les rançongiciels, détecter des APT, automatiser la réponse aux incidents et aider les enquêteurs.
 
 \bigskip
 
@@ -265,7 +265,7 @@ Ce réseau virtuel crée par Tailscale est appelé \textit{Tailnet}.
 
 \bigskip
 
-De fait, l'outil va permet de créer une infrastructure pour le projet avec le déploiement de Caldera et d'une machine virutelle cible sur Windows.
+De fait, l'outil va permet de créer une infrastructure pour le projet avec le déploiement de Caldera et d'une machine virtuelle cible sur Windows.
 Chaque machine peut communiquer directement avec l'autre et cela va nous permettre de travailler sur le projet de manière efficace sans nécessité de se connecter à un réseau local configuré.
 Ci-dessous, un schéma de l'architecture de notre projet :
 \begin{figure}[!h]
@@ -311,14 +311,14 @@ Tailscale peut être utilisé dans divers scénarios :
 \newpage
 \section{Déroulement du Projet}
 
-L'étude est composée de plusieurs étapes clées : \\
-Dans un premier temps, nous allons réaliser une étude préalable pour comprendre et maîtriser les différents outils présentés précedemment.
+L'étude est composée de plusieurs étapes clés : \\
+Dans un premier temps, nous allons réaliser une étude préalable pour comprendre et maîtriser les différents outils présentés précédemment.
 Ensuite, nous allons émuler plusieurs APT afin d'évaluer l'efficacité de l'outil Caldera.
 Puis, dans un second temps, nous analyserons l'utilité des outils de détection comme Aurora ainsi que les difficultés liées.
-Enfin, nous conclurons quant à l'utilité et les forces des outils présentés.
+Enfin, nous conclurons quant à l'utilité et aux forces des outils présentés.
 Ci-dessous, un calendrier résumant les différentes étapes de l'étude :
 \begin{itemize}
-    \item \textbf{Étude préalable (7 janvier - 11 février)} : Choix des outils et du sujet
+    \item \textbf{Étude préalable (7 janvier - 11 février)} : Choix du sujet et des outils
     \item \textbf{Prise en main des outils (11 février - 4 mars)} : Installation et prise en main des outils
     \item \textbf{Mise en place du premier scénario (4 mars - 11 mars)} : Émulation d'une attaque simple
     \item \textbf{Mise en place du second scénario (11 mars - 1 avril)} : Émulation d'une attaque complexe (Akira)
@@ -335,36 +335,36 @@ La première étape de l'étude a consisté à installer les différents outils 
 
 Pour commencer, nous avons utilisé Tailscale pour créer un réseau virtuel qui nous sert d'environnement de travail.
 Ensuite, nous avons instancié Caldera à l'aide de Docker.
-Nous avons rencontré ensuite certaines difficultés pour faire fonctionner Caldera dans ce conteneur mais aussi à se connecter à l'interface web depuis une autre machine du réseau Tailscale.
-Enfin, nous avons déployer une machine virtuelle Windows serveur 2019 sur laquelle nous avons installé l'EDR Aurora.
-Par la suite nous avons configuré un Active Directory (AD) sur cette même machine pour une simulation plus proche d'un environnement d'entreprise.
+Nous avons rencontré ensuite certaines difficultés pour faire fonctionner Caldera dans ce conteneur, mais aussi à se connecter à l'interface web depuis une autre machine du réseau Tailscale.
+Enfin, nous avons déployé une machine virtuelle Windows serveur 2019 sur laquelle nous avons installé l'EDR Aurora.
+Par la suite, nous avons configuré un Active Directory (AD) sur cette même machine pour une simulation plus proche d'un environnement d'entreprise.
 
 \subsubsection{Prise en main des outils}
 \begin{enumerate}
     \item \textbf{Caldera} : 
     Pour prendre en main l'outil Caldera, il nous a fallu commencer par comprendre comment fonctionne l'émulation d'attaque.
-    Ainsi, nous avons utilisés les salles de \textit{TryHackMe} à ce sujet. \\
+    Ainsi, nous avons utilisé les salles de \textit{TryHackMe} à ce sujet. \\
 
-    Pour cela nous avons dans un premier temps effectué des recherches sur le concept d'émulation d'attaque, non seulement d'un point de vue technique mais aussi d'un point vue entreprise (entente avec l'entreprise cible, méthodologie, rapport).
+    Pour cela, nous avons dans un premier temps effectué des recherches sur le concept d'émulation d'attaque, non seulement d'un point de vue technique, mais aussi d'un point vue entreprise (entente avec l'entreprise cible, méthodologie, rapport).
     Dans un second temps, nous avons mis en pratique nos connaissances via l'outil \verb|Invoke-Atomic| développé par le groupe Atomic Red Team pour l'émulation d'APT, de techniques via Powershell. \\
 
-    Enfin nous avons réaliser le cours sur l'outil Caldera qui nous a appris à manier l'outil et ses différents aspects. 
+    Enfin nous avons réalisé le cours sur l'outil Caldera qui nous a appris à manier l'outil et ses différents aspects. 
 
     \item \textbf{Windows \- Event Manager} :
-    Afin de mieux comprendre comment fonctionne les attaques d'un point de vue de la victime et l'EDR Aurora, nous avons décider d'apprendre et de comprendre la gestion des journaux sur Windows.
+    Afin de mieux comprendre comment fonctionne les attaques d'un point de vue de la victime et l'EDR Aurora, nous avons décidé d'apprendre et de comprendre la gestion des journaux sur Windows.
     Ainsi, nous avons utilisé les outils suivant : \verb|Get-WinEvent|, \verb|wevtutil.exe| ou encore \verb|XPath Queries|.
     Nous avons utilisé la salle TryHackMe associée.
-    Cela nous a permis de comprendre la formes des techniques au sein des journaux, ainsi que la manière de les trier et de les analyser. \\
+    Cela nous a permis de comprendre la forme des techniques au sein des journaux, ainsi que la manière de les trier et de les analyser. \\
     
     \item \textbf{Aurora EDR} :
     Nous avons ensuite pris en main l'outil Aurora EDR.
     Pour cela, nous avons utilisé la documentation de l'outil qui nous a permis de comprendre comment fonctionne l'outil et comment il s'intègre dans notre environnement.
-    Puis, nous avons réaliser la leçon de mise en pratique de TryHackMe. \\
+    Puis, nous avons réalisé la leçon de mise en pratique de TryHackMe. \\
 \end{enumerate}
 
 \newpage
 \subsection{Premier scénario}
-L'objectif de ce premier scénario était de prendre en mains les diverses aspects de Caldera dont les :
+L'objectif de ce premier scénario était de prendre en mains les divers aspects de Caldera dont nous avons besoin pour la suite :
 \begin{itemize}
     \item Techniques
     \item Adversaires
@@ -433,7 +433,7 @@ Ainsi, nous avons pu émuler une attaque simple à l'aide de Caldera en utilisan
 \subsection{Second scénario}
 
 Dans ce second scénario, nous allons émuler une attaque plus complexe.
-Nous avons choisi d'émuler l'APT \textbf{AKIRA} qui est un rançongiciel.
+Pour cela, nous avons choisi l'APT \textbf{AKIRA} qui agit comme rançongiciel.
 
 Voici les techniques utilisées d'après le cadre MITRE ATT\&CK \cite{AkiraGOLDSAHARA} :
 \begin{table}[h!]
@@ -475,7 +475,7 @@ Cette étape effectuée, il reste à créer une opération pour émuler l'attaqu
 
 Une fois les opérations menées, il reste à analyser les journaux de l'EDR Aurora pour voir si les techniques ont bien été détectées.
 Pour cela, il suffit de lancer l'outil Aurora et de se rendre dans l'application Event Viewer de Windows.
-Les journaux d'Aurora se trouvent dans le cannal \verb|Application| et la source est \verb|AuroraAgent|.
+Les journaux d'Aurora se trouvent dans le canal \verb|Application| et la source est \verb|AuroraAgent|.
 Dans les captures d'écrans \ref{fig:event_viewer_1} et \ref{fig:event_viewer_2} ci-dessous, un exemple de journal d'Aurora vu dans l'Event Viewer de Windows.
 
 \begin{figure}[h!]
@@ -522,7 +522,7 @@ Il est possible de filtrer pour ne récupérer que les événements d'Aurora.
     \item \textbf{ParentCommandLine} : Ligne de commande du processus parent
 \end{itemize}
 
-Ci-dessous, l'extrait du premier script qui permet de récupérer les informations suivantes provenants des journaux d'Aurora :
+Ci-dessous, l'extrait du premier script qui permet de récupérer, depuis les journaux d'Aurora, les informations suivantes :
 
 \begin{lstlisting}[caption={Récupération des journaux d'Aurora}, label={lst:aurora_logs}]
 $events = Get-WinEvent -LogName "Application" -FilterXPath "*[System[Provider[@Name='AuroraAgent']]]"
@@ -531,7 +531,7 @@ $events = Get-WinEvent -LogName "Application" -FilterXPath "*[System[Provider[@N
 On utilise la commande \verb|Get-WinEvent| avec un filtre XPath pour ne récupérer que les événements d'Aurora.
 XPath est un langage de requête qui permet de sélectionner des nœuds dans un document XML, il a été créé par W3C \cite{XMLPathLanguage}.
 Ce premier script nous permet d'obtenir les TTP les plus courantes repérées par Aurora.
-Dans nos essais, le script a pu travailler sur 1135 événements d'Aurora et a pu en extraire 282 TTP, avec l'ajout de quelques commandes pour filter le résultat on obtient :
+Dans nos essais, le script a pu travailler sur 1135 événements d'Aurora et a pu en extraire 282 TTP, avec l'ajout de quelques commandes pour filtrer le résultat, on obtient :
 
 \begin{lstlisting}[caption={Recherche des TTP dans les journaux d'Aurora}, label={lst:ttp_logs}]
 PS C:\Users\Administrator> .\Get-TTP.ps1 | Group-Object -Property TTP | ForEach-Object {[PSCustomObject]@{
@@ -617,12 +617,11 @@ Nous avons donc pu réaliser une étude complète sur l'émulation d'APT et la d
 
 \subsection{Observations sur Caldera}
 
-La mise en place d'un agent avec Caldera puis la création d'un adversaire a été relativement simple.
+La mise en place d'un agent avec Caldera puis la création d'un adversaire ont été relativement simples.
 Nous avons pu créer un adversaire fictif et l'émuler sur une machine virtuelle Windows Server 2019.
-Cependant, il a fallu corriger certaines capacités pour qu'elles soient compatibles avec notre environnement.
-Cela peut causer des pertes de temps pour une entreprise qui souhaiterait émuler des APT plus complexes.
-Il a fallu corriger les commandes exécutées par Caldera pour qu'elles soient compatibles avec notre environnement.
-Finalement, cela correspond plus à la réalité sur le terrain car il n'y a pas de formule miracle pour réaliser une attaque sur un système précis.
+Toutefois, la présence de certaines capacités non à jour dans Caldera a causé des problèmes de compatibilité avec notre environnement. 
+Ces dernières ont pu être corrigées à l'aide du dépôt Atomic Red Team, mais cela prends du temps et peut entraîner du retard pour des entreprises souhaitant émuler des APT plus complexes.
+Au final, cette contrainte reflète plutôt bien la réalité sur le terrain en montrant qu'il n'existe pas de méthode miracle pour mener une attaque sur un environnement spécifique.
 
 \bigskip
 
@@ -645,7 +644,7 @@ D'autant plus que la version \verb|Lite| d'Aurora dispose d'un ensemble restrein
 Ensuite, la méthode utilisée pour relier les TTP aux APT n'est pas infaillible.
 Elle repose sur une correspondance entre les TTP détectées et celles répertoriées dans la base de données MITRE ATT\&CK.
 Cependant, cette correspondance peut être incomplète ou imprécise, notamment si certaines techniques ne sont pas documentées ou si des variations dans leur mise en œuvre ne sont pas prises en compte.
-Cela passe par exemple par l'ajout de règles Sigma pour enrichir la capacité de reconaissance d'Aurora.
+Cela passe par exemple par l'ajout de règles Sigma pour enrichir la capacité de reconnaissance d'Aurora.
 
 \bigskip
 
@@ -664,7 +663,7 @@ Ces scénarios ont permis de simuler des techniques issues du cadre MITRE ATT\&C
 
 Les résultats montrent que Caldera peut être efficace pour émuler des attaques et tester les capacités de détection des outils comme Aurora.
 Les scripts développés ont permis d'extraire automatiquement les TTP des journaux d'Aurora et de les associer à des APT potentielles en utilisant la base de données MITRE ATT\&CK.
-Cependant, certaines limitations ont été identifiées, notamment l'incapacité à relier précisément les journaux à l'APT Akira, ce qui souligne la nécessité d'améliorer les capacités de détection en enrichissant les bases de données utilisées ou en changant la méthode utilisée pour faire le rapprochement.
+Cependant, certaines limitations ont été identifiées, notamment l'incapacité à relier précisément les journaux à l'APT Akira, ce qui souligne la nécessité d'améliorer les capacités de détection en enrichissant les bases de données utilisées ou en changeant la méthode utilisée pour faire le rapprochement.
 
 \bigskip
 
