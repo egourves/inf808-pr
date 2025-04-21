@@ -25,10 +25,6 @@ services:
   target:
     container_name: target
     image: crycode/http-server-upload
-    #build:
-    #  context: ./target/
-    #  dockerfile: Dockerfile
-    #command: tail -f /dev/null
     volumes:
       - target:/upload
     network_mode: service:ts-target

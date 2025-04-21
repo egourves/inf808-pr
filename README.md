@@ -17,14 +17,23 @@ Le fichier `docker-compose.yml` dans le dossier `docker` permet de déployer les
 git clone --recursive https://github.com/mitre/caldera docker/caldera
 ```
 
-Le fichier `fix.sh` peut être nécessaire lorsque certains modules de Caldera ne sont pas initialisés. Il suffit alors de copier le fichier `fix.sh` dans le dossier caldera, puis on peut utiliser la commande suivante :
+Le fichier `Caldera_plugins_fix.sh` peut être nécessaire lorsque certains modules de Caldera ne sont pas initialisés. Il suffit alors de copier le fichier `Caldera_plugins_fix.sh` dans le dossier caldera, puis on peut utiliser la commande suivante :
 
 ```shell
-podman run --rm -v $PWD:/app:z ubuntu ./app/fix.sh
+podman run --rm -v $PWD:/app:z ubuntu ./app/Caldera_plugins_fix.sh
 ```
 
 > Si vous rencontrez une erreur liés aux volumes à cause des commandes précédentes, essayez d'enlever l'option `:z` après les volumes.
 > Cette option est utile sur les environments où SELinux est actif.
+
+Dans le dossier `docker` se trouve un fichier contenant des variables environnement `.env`, un exemple est proposé avec `.env.example`. Il contient les clés d'authentification nécessaires pour que les conteneurs puissent rejoindre un tailnet de Tailscale.
+
+Pour exposer les pages web dans le tailnet on peut utiliser la commande `tailscale serve` :
+```shell
+podman exec -it ts-caldera tailscale serve --bg 8888
+```
+
+Cette commande permet d'exposer automatiquement Caldera en HTTPS à l'aide de Tailscale.
 
 ## Compilation LaTeX
 
@@ -32,9 +41,9 @@ Dans le dossier `.github` se trouve un fichier de configuration pour lancer des 
 
 ## Scripts Powershell
 
-Le scrip`Get-TTP.ps1` permet d'obtenir les TTP générées dans les Windows Event par Aurora.
+Le script `Get-TTP.ps1` permet d'obtenir les TTPs générées dans les Windows Event par Aurora.
 
-Pour obtenir les TTP les plus communes (nombre d'occurence), on peut utiliser la commande suivante :
+Pour obtenir les TTPs les plus communes (nombre d'occurence), on peut utiliser la commande suivante :
 ```powershell
 .\Get-TTP.ps1 | Group-Object -Property TPP | ForEach-Object {     [PSCustomObject]@{
          TTP = $_.Name  # Reuse the category from the original objects
@@ -55,7 +64,7 @@ T1087.002    27 {@{TPP=T1087.002; EventTime=2025-04-06T02:26:21.033853800Z; Leve
 T1219       224 {@{TPP=T1219; EventTime=2025-04-06T02:20:57.869721300Z; Level=2; Pare…
 ```
 
-Pour mettre en lien les TTP générées dans les Windows Event par Aurora avec des groupes (APT) présent sur mitre, on peut réutiliser la commande précédente en ajoutant le script Match_APT_with_TTP :
+Pour mettre en lien les TTPs générées dans les Windows Event par Aurora avec des groupes (APT) présent sur mitre, on peut réutiliser la commande précédente en ajoutant le script Match_APT_with_TTP :
 ```powershell
 .\Get-TTP.ps1 | Group-Object -Property TPP | ForEach-Object {     [PSCustomObject]@{
          TTP = $_.Name  # Reuse the category from the original objects

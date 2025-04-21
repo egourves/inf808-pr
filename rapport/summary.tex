@@ -1,0 +1,47 @@
+\documentclass[12pt,a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[margin=1in]{geometry}
+\usepackage{lipsum} % For placeholder text, remove if not needed
+
+\begin{document}
+
+\section*{Sommaire Exécutif}
+
+\hrule
+\vspace{0.4cm}
+
+\textbf{Titre:} Projet Recherche - Emulation d'APT par Caldera et Analyse. \\
+\textbf{Participants:} Ewen GOURVES, Aymeric ROBIN, Paul SCHELLER.
+
+\section*{Description}
+Ce projet de recherche vise à analyser les attaques de type APT (Advanced Persistent Threat) en utilisant l'outil Caldera.
+L'objectif principal est de simuler des scénarios d'attaques et d'évaluer la possibilité de les détecter et les associés à des techniques connues.
+L'outil Caldera permet de simuler des attaques en utilisant des techniques du cadre MITRE ATT\&CK, ce qui facilite l'analyse et la compréhension des comportements malveillants.
+Aurora EDR est utilisé pour la détection des attaques, il permet notamment d'identifier des techniques d'attaques et de les corréler avec des événements de sécurité.
+
+\subsection*{Objectifs clés}
+\begin{itemize}
+    \item Simuler des attaques APT en utilisant Caldera.
+    \item Analyser les résultats obtenus par Aurora EDR.
+    \item Évaluer la capacité de détection d'Aurora EDR face aux attaques simulées.
+    \item Identifier les techniques d'attaques utilisées.
+\end{itemize}
+
+\subsection*{Résultats}
+\begin{itemize}
+    \item L'outil Caldera a permis de simuler plusieurs scénarios d'attaques APT.
+    \item Les attaques simulées ont été détectées par Aurora EDR. Certaines ont pu être identifiées à des techniques du cadre MITRE ATT\&CK.
+    \item Il a été possible d'associer les techniques reconnues à des APT connues. Cependant, nous n'avons pas pu établir le lien entre les techniques détectées et l'APT simulé (Akira).
+\end{itemize}
+
+\subsection*{Conclusion}
+\begin{itemize}
+    \item L'outil Caldera est efficace pour simuler des attaques APT et automatiser ce processus.
+    \item Aurora EDR est capable de détecter ces attaques et de les corréler avec des techniques connues.
+    \item Cependant, il manque de règles de détection pour certaines techniques, ce qui limite son efficacité.
+    \item Le rapprochement entre les techniques reconnues et les APT est une tâche difficile. En particulier, trouver la bonne méthode pour regrouper les techniques détectées est un défi.
+\end{itemize}
+
+\end{document}
